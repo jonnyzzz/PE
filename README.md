@@ -14,3 +14,10 @@ Initial sources are under [Common Public License v1.0](http://www.eclipse.org/le
 
 I used https://github.com/jonnyzzz/intellij-ant-maven to simplify IDEA dependencies
 
+
+
+Building
+========
+
+First call ```ant -f build/fetch.xml fetch``` to make all dependencies fetched,
+next use IntelliJ IDEA to compule project. Build artifact to have library jars created
