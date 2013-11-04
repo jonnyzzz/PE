@@ -1,4 +1,6 @@
 out
 .idea/workspace.xml
 lib.fetched
-build/m2
+build/.m2
+lib.fetched
+
