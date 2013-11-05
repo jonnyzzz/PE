@@ -1,20 +1,20 @@
 <component name="libraryTable">
   <library name="testng">
     <CLASSES>
-      <root url="$PROJECT_DIR$/lib.fetched/testng/bsh-2.0b4.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/hamcrest-core-1.1.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/jcommander-1.27.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/junit-4.10.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/snakeyaml-1.12.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/testng-6.8.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/bsh-2.0b4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/hamcrest-core-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/jcommander-1.27.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/junit-4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/snakeyaml-1.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/testng-6.8.7.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="$PROJECT_DIR$/lib.fetched/testng/src/hamcrest-core-1.1-sources.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/src/jcommander-1.27-sources.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/src/junit-4.10-sources.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/src/snakeyaml-1.12-sources.jar!/" />
-      <root url="$PROJECT_DIR$/lib.fetched/testng/src/testng-6.8.7-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/src/hamcrest-core-1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/src/jcommander-1.27-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/src/junit-4.10-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/src/snakeyaml-1.12-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/testng/src/testng-6.8.7-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

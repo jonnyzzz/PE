@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="intellij-annotations">
     <CLASSES>
-      <root url="$PROJECT_DIR$/lib.fetched/intellij-annotations/annotations-12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/intellij-annotations/annotations-12.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="$PROJECT_DIR$/lib.fetched/intellij-annotations/src/annotations-12.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib.fetched/intellij-annotations/src/annotations-12.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
