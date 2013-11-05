@@ -12,22 +12,18 @@ package org.boris.pecoff4j.io;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 public class DataReader implements IDataReader {
   private InputStream dis;
   private int position = 0;
 
-  public DataReader(byte[] buffer) {
+  public DataReader(@NotNull final byte[] buffer) {
     this.dis = new BufferedInputStream(new ByteArrayInputStream(buffer));
   }
 
-  public DataReader(byte[] buffer, int offset, int length) {
-    this.dis = new BufferedInputStream(new ByteArrayInputStream(buffer,
-            offset, length));
+  public DataReader(@NotNull final byte[] buffer, final int offset, final int length) {
+    this.dis = new BufferedInputStream(new ByteArrayInputStream(buffer, offset, length));
   }
 
   public DataReader(InputStream is) {
@@ -49,14 +45,12 @@ public class DataReader implements IDataReader {
   }
 
   public long readLong() throws IOException {
-    return (readDoubleWord() & 0x00000000ffffffffl) |
-            ((long) readDoubleWord() << 32l);
+    return (readDoubleWord() & 0x00000000ffffffffl) | ((long) readDoubleWord() << 32l);
   }
 
   public int readDoubleWord() throws IOException {
     position += 4;
-    return dis.read() | dis.read() << 8 | dis.read() << 16 |
-            dis.read() << 24;
+    return dis.read() | dis.read() << 8 | dis.read() << 16 | dis.read() << 24;
   }
 
   public int getPosition() {
@@ -65,9 +59,7 @@ public class DataReader implements IDataReader {
 
   public void jumpTo(int location) throws IOException {
     if (location < position)
-      throw new IOException(
-              "DataReader does not support scanning backwards (" +
-                      location + ")");
+      throw new IOException("DataReader does not support scanning backwards (" +location + ")");
     if (location > position)
       skipBytes(location - position);
   }
@@ -75,7 +67,7 @@ public class DataReader implements IDataReader {
   public void skipBytes(int numBytes) throws IOException {
     position += numBytes;
     for (int i = 0; i < numBytes; i++) {
-      dis.read();
+      if (-1 == dis.read()) throw new EOFException("Unexpected stream end");
     }
   }
 
@@ -85,14 +77,21 @@ public class DataReader implements IDataReader {
 
   public void read(@NotNull byte[] b) throws IOException {
     position += b.length;
-    dis.read(b);
+
+    int off = 0;
+    int read;
+    while ((read = dis.read(b, off, b.length - off)) > 0) {
+      off += read;
+      if (off >= b.length) return;
+    }
+    throw new EOFException("Expected to read bytes from the stream");
   }
 
   @NotNull
-  public String readUtf(int size) throws IOException {
+  public String readUtf(final int size) throws IOException {
     position += size;
     byte b[] = new byte[size];
-    dis.read(b);
+    read(b);
     int i = 0;
     for (; i < b.length; i++) {
       if (b[i] == 0)
@@ -102,8 +101,9 @@ public class DataReader implements IDataReader {
   }
 
   public String readUtf() throws IOException {
+    //TODO: use encoding
     StringBuilder sb = new StringBuilder();
-    int c = 0;
+    int c;
     while ((c = readByte()) != 0) {
       if (c == -1)
         throw new IOException("Unexpected end of stream");
@@ -114,8 +114,9 @@ public class DataReader implements IDataReader {
 
   @Nullable
   public String readUnicode() throws IOException {
+    //TODO: use encoding
     StringBuilder sb = new StringBuilder();
-    char c = 0;
+    char c;
     while ((c = (char) readWord()) != 0) {
       sb.append(c);
     }
@@ -125,7 +126,9 @@ public class DataReader implements IDataReader {
     return sb.toString();
   }
 
-  public String readUnicode(int size) throws IOException {
+  @NotNull
+  public String readUnicode(final int size) throws IOException {
+    //TODO: use encoding
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < size; i++) {
       sb.append((char) readWord());
