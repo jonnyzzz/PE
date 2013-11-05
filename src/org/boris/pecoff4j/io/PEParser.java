@@ -61,7 +61,7 @@ public class PEParser {
     pe.setSectionTable(readSectionHeaders(pe, dr));
 
     // Now read the rest of the file
-    DataEntry entry = null;
+    DataEntry entry;
     while ((entry = findNextEntry(pe, dr.getPosition())) != null) {
       if (entry.isSection) {
         readSection(pe, entry, dr);
@@ -74,7 +74,7 @@ public class PEParser {
 
     // Read any trailing data
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    int read = -1;
+    int read;
     while ((read = dr.readByte()) != -1) {
       bos.write(read);
     }
@@ -404,11 +404,11 @@ public class PEParser {
   private static byte[] readPreambleData(int pointer, @NotNull IDataReader dr)
           throws IOException {
     if (pointer > dr.getPosition()) {
-      byte[] pa = new byte[pointer - dr.getPosition()];
+      final byte[] pa = new byte[pointer - dr.getPosition()];
       dr.read(pa);
       boolean zeroes = true;
-      for (int i = 0; i < pa.length; i++) {
-        if (pa[i] != 0) {
+      for (byte aPa : pa) {
+        if (aPa != 0) {
           zeroes = false;
           break;
         }
@@ -420,21 +420,20 @@ public class PEParser {
     return null;
   }
 
-  private static void readDebugRawData(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr)
-          throws IOException {
+  private static void readDebugRawData(@NotNull PE pe,
+                                       @NotNull DataEntry entry,
+                                       @NotNull IDataReader dr) throws IOException {
     // Read any preamble data
-    ImageData id = pe.getImageData();
-    byte[] pa = readPreambleData(entry.pointer, dr);
-    if (pa != null)
-      id.setDebugRawDataPreamble(pa);
-    DebugDirectory dd = id.getDebug();
-    byte[] b = new byte[dd.getSizeOfData()];
+    final ImageData id = pe.getImageData();
+    final byte[] pa = readPreambleData(entry.pointer, dr);
+    if (pa != null) id.setDebugRawDataPreamble(pa);
+    final DebugDirectory dd = id.getDebug();
+    final byte[] b = new byte[dd.getSizeOfData()];
     dr.read(b);
     id.setDebugRawData(b);
   }
 
-  private static void readSection(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr)
-          throws IOException {
+  private static void readSection(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr) throws IOException {
     SectionTable st = pe.getSectionTable();
     SectionHeader sh = st.getHeader(entry.index);
     SectionData sd = new SectionData();
@@ -463,8 +462,7 @@ public class PEParser {
         int dad = idd.getVirtualAddress();
         if (dad >= vad && dad < vex) {
           int off = dad - vad;
-          IDataReader idr = new ByteArrayDataReader(b, off, idd
-                  .getSize());
+          IDataReader idr = new ByteArrayDataReader(b, off, idd.getSize());
           DataEntry de = new DataEntry(i, 0);
           de.baseAddress = sh.getVirtualAddress();
           readImageData(pe, de, idr);
@@ -478,8 +476,8 @@ public class PEParser {
           byte[] b) throws IOException {
     DataReader dr = new DataReader(b);
     BoundImportDirectoryTable bidt = new BoundImportDirectoryTable();
-    List<BoundImport> imports = new ArrayList();
-    BoundImport bi = null;
+    List<BoundImport> imports = new ArrayList<BoundImport>();
+    BoundImport bi;
     while ((bi = readBoundImport(dr)) != null) {
       bidt.add(bi);
       imports.add(bi);
@@ -490,8 +488,8 @@ public class PEParser {
       }
     });
     IntMap names = new IntMap();
-    for (int i = 0; i < imports.size(); i++) {
-      bi = imports.get(i);
+    for (BoundImport anImport : imports) {
+      bi = anImport;
       int offset = bi.getOffsetToModuleName();
       String n = (String) names.get(offset);
       if (n == null) {
@@ -505,8 +503,7 @@ public class PEParser {
   }
 
   @Nullable
-  private static BoundImport readBoundImport(@NotNull IDataReader dr)
-          throws IOException {
+  private static BoundImport readBoundImport(@NotNull IDataReader dr) throws IOException {
     BoundImport bi = new BoundImport();
     bi.setTimestamp(dr.readDoubleWord());
     bi.setOffsetToModuleName(dr.readWord());
@@ -520,8 +517,8 @@ public class PEParser {
   }
 
   @NotNull
-  public static ImportDirectory readImportDirectory(byte[] b, int baseAddress)
-          throws IOException {
+  public static ImportDirectory readImportDirectory(byte[] b,
+                                                    final int baseAddress) throws IOException {
     DataReader dr = new DataReader(b);
     ImportDirectory id = new ImportDirectory();
     ImportDirectoryEntry ide = null;
@@ -546,8 +543,7 @@ public class PEParser {
   }
 
   @Nullable
-  public static ImportDirectoryEntry readImportDirectoryEntry(@NotNull IDataReader dr)
-          throws IOException {
+  public static ImportDirectoryEntry readImportDirectoryEntry(@NotNull IDataReader dr) throws IOException {
     ImportDirectoryEntry id = new ImportDirectoryEntry();
     id.setImportLookupTableRVA(dr.readDoubleWord());
     id.setTimeDateStamp(dr.readDoubleWord());
@@ -564,10 +560,10 @@ public class PEParser {
   }
 
   @NotNull
-  public static ImportDirectoryTable readImportDirectoryTable(@NotNull IDataReader dr,
-                                                              int baseAddress) throws IOException {
+  public static ImportDirectoryTable readImportDirectoryTable(@NotNull final IDataReader dr,
+                                                              final int baseAddress) throws IOException {
     ImportDirectoryTable idt = new ImportDirectoryTable();
-    ImportEntry ie = null;
+    ImportEntry ie;
     while ((ie = readImportEntry(dr)) != null) {
       idt.add(ie);
     }
