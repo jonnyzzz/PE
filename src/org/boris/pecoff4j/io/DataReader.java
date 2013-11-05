@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.boris.pecoff4j.io;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -80,11 +83,12 @@ public class DataReader implements IDataReader {
     dis.close();
   }
 
-  public void read(byte[] b) throws IOException {
+  public void read(@NotNull byte[] b) throws IOException {
     position += b.length;
     dis.read(b);
   }
 
+  @NotNull
   public String readUtf(int size) throws IOException {
     position += size;
     byte b[] = new byte[size];
@@ -108,6 +112,7 @@ public class DataReader implements IDataReader {
     return sb.toString();
   }
 
+  @Nullable
   public String readUnicode() throws IOException {
     StringBuilder sb = new StringBuilder();
     char c = 0;

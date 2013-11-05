@@ -10,6 +10,8 @@
 package org.boris.pecoff4j.asm;
 
 import org.boris.pecoff4j.util.Reflection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssemblyParser {
-  public static AbstractInstruction[] parseAll(int offset, InputStream is) throws IOException {
+  public static AbstractInstruction[] parseAll(int offset, @NotNull InputStream is) throws IOException {
     List<AbstractInstruction> instructions = new ArrayList();
     AbstractInstruction ins = null;
     while ((ins = parse(is)) != null) {
@@ -28,7 +30,8 @@ public class AssemblyParser {
     return instructions.toArray(new AbstractInstruction[instructions.size()]);
   }
 
-  public static AbstractInstruction parse(InputStream is) throws IOException {
+  @Nullable
+  public static AbstractInstruction parse(@NotNull InputStream is) throws IOException {
     int opcode = is.read() & 0xff;
     int highop = opcode & 0xf0;
     int imm32;
@@ -180,7 +183,7 @@ public class AssemblyParser {
     return null;
   }
 
-  public static int readDoubleWord(InputStream is) throws IOException {
+  public static int readDoubleWord(@NotNull InputStream is) throws IOException {
     return is.read() | is.read() << 8 | is.read() << 16 | is.read() << 24;
   }
 

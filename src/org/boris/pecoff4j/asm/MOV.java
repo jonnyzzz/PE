@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MOV extends AbstractInstruction {
   private ModRM modrm;
   private SIB sib;
@@ -77,6 +79,7 @@ public class MOV extends AbstractInstruction {
     this.code = toCode(opcode, modrm, sib, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     switch (((int) code[0]) & 0xff) {
       case 0x8b:

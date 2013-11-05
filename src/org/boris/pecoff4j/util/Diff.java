@@ -9,12 +9,14 @@
  *******************************************************************************/
 package org.boris.pecoff4j.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class Diff {
-  public static boolean equals(File f1, File f2) throws IOException {
+  public static boolean equals(@NotNull File f1, @NotNull File f2) throws IOException {
     return equals(IO.toBytes(f1), IO.toBytes(f2));
   }
 
@@ -22,7 +24,7 @@ public class Diff {
     return Arrays.equals(b1, b2);
   }
 
-  public static boolean equals(byte[] b1, byte[] b2, boolean ignoreLength) {
+  public static boolean equals(@NotNull byte[] b1, @NotNull byte[] b2, boolean ignoreLength) {
     if (ignoreLength) {
       for (int i = 0; i < b1.length && i < b2.length; i++) {
         if (b1[i] != b2[i]) {
@@ -35,7 +37,7 @@ public class Diff {
     }
   }
 
-  public static boolean findDiff(byte[] b1, byte[] b2, boolean ignoreLength) {
+  public static boolean findDiff(@NotNull byte[] b1, @NotNull byte[] b2, boolean ignoreLength) {
     boolean diff = false;
     if (b1.length != b2.length && !ignoreLength) {
       System.out.println("Different lengths: " +

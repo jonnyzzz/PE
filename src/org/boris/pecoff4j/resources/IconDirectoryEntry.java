@@ -10,6 +10,8 @@
 package org.boris.pecoff4j.resources;
 
 
+import org.jetbrains.annotations.NotNull;
+
 public class IconDirectoryEntry {
   private int width;
   private int height;
@@ -84,7 +86,7 @@ public class IconDirectoryEntry {
     this.offset = offset;
   }
 
-  public void copyFrom(GroupIconDirectoryEntry gide) {
+  public void copyFrom(@NotNull GroupIconDirectoryEntry gide) {
     width = gide.getWidth();
     height = gide.getHeight();
     colorCount = gide.getColorCount();

@@ -10,14 +10,19 @@
 package org.boris.pecoff4j;
 
 import org.boris.pecoff4j.util.DataObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImportDirectory extends DataObject {
+  @NotNull
   private List<ImportDirectoryEntry> entries = new ArrayList();
+  @NotNull
   private List<String> names = new ArrayList();
+  @NotNull
   private List<ImportDirectoryTable> nameTables = new ArrayList();
+  @NotNull
   private List<ImportDirectoryTable> addressTables = new ArrayList();
 
   public void add(ImportDirectoryEntry entry) {

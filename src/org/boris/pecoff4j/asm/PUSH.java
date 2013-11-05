@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class PUSH extends AbstractInstruction {
   private int register;
   private byte imm8;
@@ -29,6 +31,7 @@ public class PUSH extends AbstractInstruction {
     this.code = toCode(opcode, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     switch (getOpCode()) {
       case 0x6a:

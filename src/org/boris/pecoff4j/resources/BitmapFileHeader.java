@@ -10,6 +10,7 @@
 package org.boris.pecoff4j.resources;
 
 import org.boris.pecoff4j.io.DataReader;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -20,7 +21,8 @@ public class BitmapFileHeader {
   private int reserved2;
   private int offBits;
 
-  public static BitmapFileHeader read(DataReader dr) throws IOException {
+  @NotNull
+  public static BitmapFileHeader read(@NotNull DataReader dr) throws IOException {
     BitmapFileHeader bfh = new BitmapFileHeader();
     bfh.type = dr.readWord();
     bfh.size = dr.readDoubleWord();

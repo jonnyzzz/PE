@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ADD extends AbstractInstruction {
   private ModRM modrm;
   private byte imm8;
@@ -26,6 +28,7 @@ public class ADD extends AbstractInstruction {
     this.code = toCode(opcode, modrm, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     switch (getOpCode()) {
       case 0x03:

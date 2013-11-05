@@ -1,5 +1,7 @@
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class SIB {
   public final int scale;
   public final int index;
@@ -16,6 +18,7 @@ public class SIB {
     return (byte) (scale << 6 | index << 3 | base);
   }
 
+  @NotNull
   public String toString(int imm32) {
     return Register.to32(index) + "*" + (scale * 2) + "+" + Register.to32(base) +
             AbstractInstruction.toHexString(imm32, true);

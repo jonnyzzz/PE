@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.Nullable;
+
 public class ModRM {
   public final int value;
   public final int mod;
@@ -26,6 +28,7 @@ public class ModRM {
     return (byte) (mod << 6 | reg2 << 3 | reg1);
   }
 
+  @Nullable
   public String toIntelAssembly(int imm32) {
     switch (mod) {
       case 0:

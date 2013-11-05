@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class TEST extends AbstractInstruction {
   private ModRM modrm;
 
@@ -17,6 +19,7 @@ public class TEST extends AbstractInstruction {
     this.code = toCode(0x85, modrm);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "test " + Register.to32(modrm.reg1) + ", " + Register.to32(modrm.reg2);
   }

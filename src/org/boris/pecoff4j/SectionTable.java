@@ -10,6 +10,8 @@
 package org.boris.pecoff4j;
 
 import org.boris.pecoff4j.util.IntMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +26,9 @@ public class SectionTable {
   public static final String LOAD_CONFIG_TABLE = ".rdata";
 
   // Data
+  @NotNull
   private List<SectionHeader> headers = new ArrayList<SectionHeader>();
+  @NotNull
   private IntMap sections = new IntMap();
   private RVAConverter rvaConverter;
 
@@ -40,6 +44,7 @@ public class SectionTable {
     return headers.get(index);
   }
 
+  @Nullable
   public SectionData getSection(int index) {
     return (SectionData) sections.get(index);
   }
@@ -69,6 +74,7 @@ public class SectionTable {
     return pointer;
   }
 
+  @Nullable
   public SectionHeader getLastSectionRawPointerSorted() {
     SectionHeader[] headers = getHeadersPointerSorted();
     if (headers == null || headers.length == 0)
@@ -84,7 +90,7 @@ public class SectionTable {
 
     SectionHeader[] sorted = headers.toArray(new SectionHeader[0]);
     Arrays.sort(sorted, new Comparator<SectionHeader>() {
-      public int compare(SectionHeader o1, SectionHeader o2) {
+      public int compare(@NotNull SectionHeader o1, @NotNull SectionHeader o2) {
         return o1.getVirtualAddress() - o2.getVirtualAddress();
       }
     });
@@ -92,6 +98,7 @@ public class SectionTable {
     return sorted;
   }
 
+  @Nullable
   public SectionHeader findHeader(String name) {
     for (SectionHeader sh : headers) {
       if (sh.getName().equals(name))
@@ -101,6 +108,7 @@ public class SectionTable {
     return null;
   }
 
+  @Nullable
   public SectionData findSection(String name) {
     for (int i = 0; i < headers.size(); i++) {
       SectionHeader sh = headers.get(i);

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class LEA extends AbstractInstruction {
   private ModRM modrm;
   private SIB sib;
@@ -27,6 +29,7 @@ public class LEA extends AbstractInstruction {
     this.code = toCode(0x8d, modrm, sib, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     if (sib != null) {
       return "lea  " + Register.to32(modrm.reg2) + ", [" + sib.toString(imm32) + "]";

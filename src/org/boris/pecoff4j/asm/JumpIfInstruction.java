@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class JumpIfInstruction extends AbstractInstruction {
   private int op;
   private int imm32;
@@ -19,6 +21,7 @@ public class JumpIfInstruction extends AbstractInstruction {
     this.code = toCode(0x0f, new ModRM(op), imm32);
   }
 
+  @NotNull
   public String getOp() {
     switch (op) {
       case 0x85:
@@ -29,6 +32,7 @@ public class JumpIfInstruction extends AbstractInstruction {
     return "???";
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return getOp() + "  " + toHexString(imm32, false) + " (" + toHexString(offset + imm32 + size(), false) + ")";
   }

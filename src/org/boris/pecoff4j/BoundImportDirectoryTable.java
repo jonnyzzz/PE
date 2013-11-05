@@ -9,10 +9,13 @@
  *******************************************************************************/
 package org.boris.pecoff4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BoundImportDirectoryTable {
+  @NotNull
   private List<BoundImport> imports = new ArrayList();
 
   public void add(BoundImport bi) {

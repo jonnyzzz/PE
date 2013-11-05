@@ -12,6 +12,7 @@ package org.boris.pecoff4j.util;
 import org.boris.pecoff4j.io.*;
 import org.boris.pecoff4j.resources.IconDirectory;
 import org.boris.pecoff4j.resources.IconImage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,15 +22,18 @@ public class IconFile {
   private IconDirectory directory;
   private IconImage[] images;
 
+  @NotNull
   public static IconFile parse(String filename) throws IOException {
     return read(new DataReader(new FileInputStream(filename)));
   }
 
+  @NotNull
   public static IconFile parse(File file) throws IOException {
     return read(new DataReader(new FileInputStream(file)));
   }
 
-  public static IconFile read(IDataReader dr) throws IOException {
+  @NotNull
+  public static IconFile read(@NotNull IDataReader dr) throws IOException {
     IconFile ic = new IconFile();
     ic.directory = ResourceParser.readIconDirectory(dr);
     ic.images = new IconImage[ic.directory.getCount()];
@@ -41,7 +45,7 @@ public class IconFile {
     return ic;
   }
 
-  public void write(IDataWriter dw) throws IOException {
+  public void write(@NotNull IDataWriter dw) throws IOException {
     int offset = directory.sizeOf();
     for (int i = 0; i < images.length; i++) {
       directory.getEntry(i).setOffset(offset);

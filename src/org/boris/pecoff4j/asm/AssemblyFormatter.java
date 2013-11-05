@@ -9,11 +9,13 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.PrintStream;
 
 public class AssemblyFormatter {
-  public static void format(AbstractInstruction[] instructions, PrintStream out) throws IOException {
+  public static void format(@NotNull AbstractInstruction[] instructions, @NotNull PrintStream out) throws IOException {
     for (AbstractInstruction ai : instructions) {
       out.print(AbstractInstruction.toHexString(ai.getOffset(), false));
       out.print("   ");
@@ -22,7 +24,7 @@ public class AssemblyFormatter {
     }
   }
 
-  public static String toHexString(byte[] bytes, int pad) {
+  public static String toHexString(@NotNull byte[] bytes, int pad) {
     StringBuilder sb = new StringBuilder();
     for (byte b : bytes) {
       sb.append(toHexString(b));

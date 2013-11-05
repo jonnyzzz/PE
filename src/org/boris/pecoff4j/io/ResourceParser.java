@@ -10,11 +10,14 @@
 package org.boris.pecoff4j.io;
 
 import org.boris.pecoff4j.resources.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
 public class ResourceParser {
-  public static Bitmap readBitmap(IDataReader dr) throws IOException {
+  @NotNull
+  public static Bitmap readBitmap(@NotNull IDataReader dr) throws IOException {
     Bitmap bm = new Bitmap();
     bm.setFileHeader(readBitmapFileHeader(dr));
     bm.setInfoHeader(readBitmapInfoHeader(dr));
@@ -22,7 +25,8 @@ public class ResourceParser {
     return bm;
   }
 
-  public static BitmapFileHeader readBitmapFileHeader(IDataReader dr)
+  @NotNull
+  public static BitmapFileHeader readBitmapFileHeader(@NotNull IDataReader dr)
           throws IOException {
     BitmapFileHeader bfh = new BitmapFileHeader();
     bfh.setType(dr.readWord());
@@ -34,7 +38,8 @@ public class ResourceParser {
     return bfh;
   }
 
-  public static BitmapInfoHeader readBitmapInfoHeader(IDataReader dr)
+  @NotNull
+  public static BitmapInfoHeader readBitmapInfoHeader(@NotNull IDataReader dr)
           throws IOException {
     BitmapInfoHeader bh = new BitmapInfoHeader();
     bh.setSize(dr.readDoubleWord());
@@ -52,7 +57,8 @@ public class ResourceParser {
     return bh;
   }
 
-  public static FixedFileInfo readFixedFileInfo(IDataReader dr)
+  @NotNull
+  public static FixedFileInfo readFixedFileInfo(@NotNull IDataReader dr)
           throws IOException {
     FixedFileInfo ffi = new FixedFileInfo();
     ffi.setSignature(dr.readDoubleWord());
@@ -71,7 +77,8 @@ public class ResourceParser {
     return ffi;
   }
 
-  public static IconImage readIconImage(IDataReader dr, int bytesInRes)
+  @NotNull
+  public static IconImage readIconImage(@NotNull IDataReader dr, int bytesInRes)
           throws IOException {
     IconImage ii = new IconImage();
     int quadSize = 0;
@@ -111,17 +118,20 @@ public class ResourceParser {
     return ii;
   }
 
+  @NotNull
   public static IconImage readPNG(byte[] data) {
     IconImage ii = new IconImage();
     ii.setPngData(data);
     return ii;
   }
 
+  @NotNull
   public static VersionInfo readVersionInfo(byte[] data) throws IOException {
     return readVersionInfo(new DataReader(data));
   }
 
-  public static VersionInfo readVersionInfo(IDataReader dr)
+  @NotNull
+  public static VersionInfo readVersionInfo(@NotNull IDataReader dr)
           throws IOException {
     VersionInfo vi = new VersionInfo();
     vi.setLength(dr.readWord());
@@ -140,7 +150,8 @@ public class ResourceParser {
     return vi;
   }
 
-  public static VarFileInfo readVarFileInfo(IDataReader dr)
+  @NotNull
+  public static VarFileInfo readVarFileInfo(@NotNull IDataReader dr)
           throws IOException {
     VarFileInfo vfi = new VarFileInfo();
     vfi.setKey(dr.readUnicode());
@@ -153,7 +164,8 @@ public class ResourceParser {
     return vfi;
   }
 
-  public static StringTable readStringTable(IDataReader dr)
+  @Nullable
+  public static StringTable readStringTable(@NotNull IDataReader dr)
           throws IOException {
     StringTable vfi = new StringTable();
     vfi.setLength(dr.readWord());
@@ -170,7 +182,8 @@ public class ResourceParser {
     return vfi;
   }
 
-  public static StringPair readStringPair(IDataReader dr) throws IOException {
+  @NotNull
+  public static StringPair readStringPair(@NotNull IDataReader dr) throws IOException {
     StringPair sp = new StringPair();
     sp.setLength(dr.readWord());
     sp.setValueLength(dr.readWord());
@@ -184,14 +197,16 @@ public class ResourceParser {
     return sp;
   }
 
-  public static Manifest readManifest(IDataReader dr, int length)
+  @NotNull
+  public static Manifest readManifest(@NotNull IDataReader dr, int length)
           throws IOException {
     Manifest mf = new Manifest();
     mf.set(dr.readUtf(length));
     return mf;
   }
 
-  public static RGBQuad readRGB(IDataReader dr) throws IOException {
+  @NotNull
+  public static RGBQuad readRGB(@NotNull IDataReader dr) throws IOException {
     RGBQuad r = new RGBQuad();
     r.setBlue(dr.readByte());
     r.setGreen(dr.readByte());
@@ -200,6 +215,7 @@ public class ResourceParser {
     return r;
   }
 
+  @NotNull
   public static StringFileInfo readStringFileInfo(IDataReader dr, int length)
           throws IOException {
     StringFileInfo sfi = new StringFileInfo();
@@ -207,7 +223,8 @@ public class ResourceParser {
     return sfi;
   }
 
-  public static IconDirectoryEntry readIconDirectoryEntry(IDataReader dr)
+  @NotNull
+  public static IconDirectoryEntry readIconDirectoryEntry(@NotNull IDataReader dr)
           throws IOException {
     IconDirectoryEntry ge = new IconDirectoryEntry();
     ge.setWidth(dr.readByte());
@@ -222,7 +239,8 @@ public class ResourceParser {
     return ge;
   }
 
-  public static IconDirectory readIconDirectory(IDataReader dr)
+  @NotNull
+  public static IconDirectory readIconDirectory(@NotNull IDataReader dr)
           throws IOException {
     IconDirectory gi = new IconDirectory();
     gi.setReserved(dr.readWord());

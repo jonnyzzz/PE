@@ -18,13 +18,14 @@ import org.boris.pecoff4j.io.DataWriter;
 import org.boris.pecoff4j.io.PEParser;
 import org.boris.pecoff4j.io.ResourceParser;
 import org.boris.pecoff4j.resources.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class IconExtractor {
-  public static void extract(File pecoff, File outputDir) throws IOException {
+  public static void extract(@NotNull File pecoff, File outputDir) throws IOException {
     PE pe = PEParser.parse(pecoff);
     ResourceDirectory rd = pe.getImageData().getResourceTable();
     if (rd == null)

@@ -10,6 +10,8 @@
 package org.boris.pecoff4j;
 
 import org.boris.pecoff4j.util.IntMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ImageData {
   private byte[] headerPadding; // TODO find out what this is
@@ -37,6 +39,7 @@ public class ImageData {
   private byte[] debugRawData;
 
   // Any image data preambes
+  @NotNull
   private IntMap preambles = new IntMap();
 
   // Any trailing data
@@ -50,6 +53,7 @@ public class ImageData {
     this.headerPadding = headerPadding;
   }
 
+  @Nullable
   public byte[] getPreamble(int directory) {
     return (byte[]) preambles.get(directory);
   }

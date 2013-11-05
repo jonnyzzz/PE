@@ -12,6 +12,8 @@ package org.boris.pecoff4j.io;
 import org.boris.pecoff4j.*;
 import org.boris.pecoff4j.constant.ImageDataDirectoryType;
 import org.boris.pecoff4j.util.IntMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,19 +22,23 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PEParser {
+  @NotNull
   public static PE parse(InputStream is) throws IOException {
     return read(new DataReader(is));
   }
 
+  @NotNull
   public static PE parse(String filename) throws IOException {
     return parse(new File(filename));
   }
 
+  @NotNull
   public static PE parse(File file) throws IOException {
     return read(new DataReader(new FileInputStream(file)));
   }
 
-  public static PE read(IDataReader dr) throws IOException {
+  @NotNull
+  public static PE read(@NotNull IDataReader dr) throws IOException {
     PE pe = new PE();
     pe.setDosHeader(readDos(dr));
 
@@ -80,7 +86,8 @@ public class PEParser {
     return pe;
   }
 
-  public static DOSHeader readDos(IDataReader dr) throws IOException {
+  @NotNull
+  public static DOSHeader readDos(@NotNull IDataReader dr) throws IOException {
     DOSHeader dh = new DOSHeader();
     dh.setMagic(dr.readWord());
     dh.setUsedBytesInLastPage(dr.readWord());
@@ -121,7 +128,8 @@ public class PEParser {
     return dh;
   }
 
-  public static DOSStub readStub(DOSHeader header, IDataReader dr)
+  @NotNull
+  public static DOSStub readStub(@NotNull DOSHeader header, @NotNull IDataReader dr)
           throws IOException {
     DOSStub ds = new DOSStub();
     int pos = dr.getPosition();
@@ -132,7 +140,8 @@ public class PEParser {
     return ds;
   }
 
-  public static PESignature readSignature(IDataReader dr) throws IOException {
+  @NotNull
+  public static PESignature readSignature(@NotNull IDataReader dr) throws IOException {
     PESignature ps = new PESignature();
     byte[] signature = new byte[4];
     dr.read(signature);
@@ -140,7 +149,8 @@ public class PEParser {
     return ps;
   }
 
-  public static COFFHeader readCOFF(IDataReader dr) throws IOException {
+  @NotNull
+  public static COFFHeader readCOFF(@NotNull IDataReader dr) throws IOException {
     COFFHeader h = new COFFHeader();
     h.setMachine(dr.readWord());
     h.setNumberOfSections(dr.readWord());
@@ -152,7 +162,8 @@ public class PEParser {
     return h;
   }
 
-  public static OptionalHeader readOptional(IDataReader dr)
+  @NotNull
+  public static OptionalHeader readOptional(@NotNull IDataReader dr)
           throws IOException {
     OptionalHeader oh = new OptionalHeader();
     oh.setMagic(dr.readWord());
@@ -201,7 +212,8 @@ public class PEParser {
     return oh;
   }
 
-  public static ImageDataDirectory readImageDD(IDataReader dr)
+  @NotNull
+  public static ImageDataDirectory readImageDD(@NotNull IDataReader dr)
           throws IOException {
     ImageDataDirectory idd = new ImageDataDirectory();
     idd.setVirtualAddress(dr.readDoubleWord());
@@ -209,7 +221,8 @@ public class PEParser {
     return idd;
   }
 
-  public static SectionTable readSectionHeaders(PE pe, IDataReader dr)
+  @NotNull
+  public static SectionTable readSectionHeaders(@NotNull PE pe, @NotNull IDataReader dr)
           throws IOException {
     SectionTable st = new SectionTable();
     int ns = pe.getCoffHeader().getNumberOfSections();
@@ -229,7 +242,8 @@ public class PEParser {
     return st;
   }
 
-  public static SectionHeader readSectionHeader(IDataReader dr)
+  @NotNull
+  public static SectionHeader readSectionHeader(@NotNull IDataReader dr)
           throws IOException {
     SectionHeader sh = new SectionHeader();
     sh.setName(dr.readUtf(8));
@@ -245,7 +259,8 @@ public class PEParser {
     return sh;
   }
 
-  public static DataEntry findNextEntry(PE pe, int pos) {
+  @Nullable
+  public static DataEntry findNextEntry(@NotNull PE pe, int pos) {
     DataEntry de = new DataEntry();
 
     // Check sections first
@@ -303,7 +318,7 @@ public class PEParser {
     return de;
   }
 
-  private static boolean isInsideSection(PE pe, ImageDataDirectory idd) {
+  private static boolean isInsideSection(@NotNull PE pe, @NotNull ImageDataDirectory idd) {
     int prd = idd.getVirtualAddress();
     int pex = prd + idd.getSize();
     SectionTable st = pe.getSectionTable();
@@ -318,7 +333,7 @@ public class PEParser {
     return false;
   }
 
-  private static void readImageData(PE pe, DataEntry entry, IDataReader dr)
+  private static void readImageData(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr)
           throws IOException {
 
     // Read any preamble data
@@ -385,7 +400,8 @@ public class PEParser {
     }
   }
 
-  private static byte[] readPreambleData(int pointer, IDataReader dr)
+  @Nullable
+  private static byte[] readPreambleData(int pointer, @NotNull IDataReader dr)
           throws IOException {
     if (pointer > dr.getPosition()) {
       byte[] pa = new byte[pointer - dr.getPosition()];
@@ -404,7 +420,7 @@ public class PEParser {
     return null;
   }
 
-  private static void readDebugRawData(PE pe, DataEntry entry, IDataReader dr)
+  private static void readDebugRawData(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr)
           throws IOException {
     // Read any preamble data
     ImageData id = pe.getImageData();
@@ -417,7 +433,7 @@ public class PEParser {
     id.setDebugRawData(b);
   }
 
-  private static void readSection(PE pe, DataEntry entry, IDataReader dr)
+  private static void readSection(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataReader dr)
           throws IOException {
     SectionTable st = pe.getSectionTable();
     SectionHeader sh = st.getHeader(entry.index);
@@ -457,6 +473,7 @@ public class PEParser {
     }
   }
 
+  @NotNull
   private static BoundImportDirectoryTable readBoundImportDirectoryTable(
           byte[] b) throws IOException {
     DataReader dr = new DataReader(b);
@@ -468,7 +485,7 @@ public class PEParser {
       imports.add(bi);
     }
     Collections.sort(imports, new Comparator<BoundImport>() {
-      public int compare(BoundImport o1, BoundImport o2) {
+      public int compare(@NotNull BoundImport o1, @NotNull BoundImport o2) {
         return o1.getOffsetToModuleName() - o2.getOffsetToModuleName();
       }
     });
@@ -487,7 +504,8 @@ public class PEParser {
     return bidt;
   }
 
-  private static BoundImport readBoundImport(IDataReader dr)
+  @Nullable
+  private static BoundImport readBoundImport(@NotNull IDataReader dr)
           throws IOException {
     BoundImport bi = new BoundImport();
     bi.setTimestamp(dr.readDoubleWord());
@@ -501,6 +519,7 @@ public class PEParser {
     return bi;
   }
 
+  @NotNull
   public static ImportDirectory readImportDirectory(byte[] b, int baseAddress)
           throws IOException {
     DataReader dr = new DataReader(b);
@@ -526,7 +545,8 @@ public class PEParser {
     return id;
   }
 
-  public static ImportDirectoryEntry readImportDirectoryEntry(IDataReader dr)
+  @Nullable
+  public static ImportDirectoryEntry readImportDirectoryEntry(@NotNull IDataReader dr)
           throws IOException {
     ImportDirectoryEntry id = new ImportDirectoryEntry();
     id.setImportLookupTableRVA(dr.readDoubleWord());
@@ -543,7 +563,8 @@ public class PEParser {
     return id;
   }
 
-  public static ImportDirectoryTable readImportDirectoryTable(IDataReader dr,
+  @NotNull
+  public static ImportDirectoryTable readImportDirectoryTable(@NotNull IDataReader dr,
                                                               int baseAddress) throws IOException {
     ImportDirectoryTable idt = new ImportDirectoryTable();
     ImportEntry ie = null;
@@ -564,7 +585,8 @@ public class PEParser {
     return idt;
   }
 
-  public static ImportEntry readImportEntry(IDataReader dr)
+  @Nullable
+  public static ImportEntry readImportEntry(@NotNull IDataReader dr)
           throws IOException {
     ImportEntry ie = new ImportEntry();
     ie.setVal(dr.readDoubleWord());
@@ -575,6 +597,7 @@ public class PEParser {
     return ie;
   }
 
+  @NotNull
   public static ExportDirectory readExportDirectory(byte[] b)
           throws IOException {
     DataReader dr = new DataReader(b);
@@ -594,6 +617,7 @@ public class PEParser {
     return edt;
   }
 
+  @NotNull
   public static LoadConfigDirectory readLoadConfigDirectory(byte[] b)
           throws IOException {
     DataReader dr = new DataReader(b);
@@ -623,12 +647,14 @@ public class PEParser {
     return lcd;
   }
 
+  @NotNull
   public static DebugDirectory readDebugDirectory(byte[] b)
           throws IOException {
     return readDebugDirectory(b, new DataReader(b));
   }
 
-  public static DebugDirectory readDebugDirectory(byte[] b, IDataReader dr)
+  @NotNull
+  public static DebugDirectory readDebugDirectory(byte[] b, @NotNull IDataReader dr)
           throws IOException {
     DebugDirectory dd = new DebugDirectory();
     dd.set(b);
@@ -643,13 +669,15 @@ public class PEParser {
     return dd;
   }
 
+  @NotNull
   private static ResourceDirectory readResourceDirectory(byte[] b,
                                                          int baseAddress) throws IOException {
     IDataReader dr = new ByteArrayDataReader(b);
     return readResourceDirectory(dr, baseAddress);
   }
 
-  private static ResourceDirectory readResourceDirectory(IDataReader dr,
+  @NotNull
+  private static ResourceDirectory readResourceDirectory(@NotNull IDataReader dr,
                                                          int baseAddress) throws IOException {
     ResourceDirectory d = new ResourceDirectory();
     d.setTable(readResourceDirectoryTable(dr));
@@ -662,7 +690,8 @@ public class PEParser {
     return d;
   }
 
-  private static ResourceEntry readResourceEntry(IDataReader dr,
+  @NotNull
+  private static ResourceEntry readResourceEntry(@NotNull IDataReader dr,
                                                  int baseAddress) throws IOException {
     ResourceEntry re = new ResourceEntry();
     int id = dr.readDoubleWord();
@@ -694,8 +723,9 @@ public class PEParser {
     return re;
   }
 
+  @NotNull
   private static ResourceDirectoryTable readResourceDirectoryTable(
-          IDataReader dr) throws IOException {
+          @NotNull IDataReader dr) throws IOException {
     ResourceDirectoryTable t = new ResourceDirectoryTable();
     t.setCharacteristics(dr.readDoubleWord());
     t.setTimeDateStamp(dr.readDoubleWord());

@@ -10,12 +10,14 @@
 package org.boris.pecoff4j;
 
 import org.boris.pecoff4j.util.DataObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceDirectory extends DataObject {
   private ResourceDirectoryTable table;
+  @NotNull
   private List<ResourceEntry> entries = new ArrayList();
 
   public ResourceDirectoryTable getTable() {

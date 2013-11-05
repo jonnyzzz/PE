@@ -3,6 +3,7 @@ package org.boris.pecoff4j;
 import org.boris.pecoff4j.io.PEParser;
 import org.boris.pecoff4j.util.IO;
 import org.boris.pecoff4j.util.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -20,7 +21,7 @@ public class TestParseDLLs {
 
   public static File[] findPEs() {
     FilenameFilter ff = new FilenameFilter() {
-      public boolean accept(File dir, String name) {
+      public boolean accept(File dir, @NotNull String name) {
         return (name.endsWith(".dll") || name.endsWith(".exe")) &&
                 name.indexOf("dllcache") == -1;
       }

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CMP extends AbstractInstruction {
   private ModRM modrm;
   private byte imm8;
@@ -19,6 +21,7 @@ public class CMP extends AbstractInstruction {
     this.code = toCode(0x3b, modrm, imm8);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "cmp  " + Register.to32(modrm.reg2) + ", [" + Register.to32(modrm.reg1) + toHexString(imm8, true) + "]";
   }

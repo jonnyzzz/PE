@@ -9,9 +9,12 @@
  *******************************************************************************/
 package org.boris.pecoff4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ImportDirectoryTable {
+  @NotNull
   private ArrayList imports = new ArrayList();
 
   public void add(ImportEntry entry) {
@@ -22,6 +25,7 @@ public class ImportDirectoryTable {
     return imports.size();
   }
 
+  @NotNull
   public ImportEntry getEntry(int index) {
     return (ImportEntry) imports.get(index);
   }

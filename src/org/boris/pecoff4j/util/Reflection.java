@@ -9,11 +9,14 @@
  *******************************************************************************/
 package org.boris.pecoff4j.util;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class Reflection {
-  public static String toString(Object o) {
+  public static String toString(@NotNull Object o) {
     StringBuilder sb = new StringBuilder();
     Field[] fields = o.getClass().getDeclaredFields();
     for (Field f : fields) {
@@ -68,7 +71,8 @@ public class Reflection {
     return sb.toString();
   }
 
-  public static String getConstantName(Class clazz, int value) throws Exception {
+  @Nullable
+  public static String getConstantName(@NotNull Class clazz, int value) throws Exception {
     Field[] fields = clazz.getDeclaredFields();
     Integer valObj = new Integer(value);
     for (int i = 0; i < fields.length; i++) {
@@ -83,7 +87,7 @@ public class Reflection {
     return null;
   }
 
-  public static void println(Object o) {
+  public static void println(@NotNull Object o) {
     System.out.println(toString(o));
   }
 }

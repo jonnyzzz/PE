@@ -12,6 +12,7 @@ package org.boris.pecoff4j.resources;
 import org.boris.pecoff4j.io.DataReader;
 import org.boris.pecoff4j.io.IDataReader;
 import org.boris.pecoff4j.util.Reflection;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -41,11 +42,13 @@ public class GroupIconDirectory {
     return Reflection.toString(this);
   }
 
+  @NotNull
   public static GroupIconDirectory read(byte[] data) throws IOException {
     return read(new DataReader(data));
   }
 
-  public static GroupIconDirectory read(IDataReader dr) throws IOException {
+  @NotNull
+  public static GroupIconDirectory read(@NotNull IDataReader dr) throws IOException {
     GroupIconDirectory gi = new GroupIconDirectory();
     gi.reserved = dr.readWord();
     gi.type = dr.readWord();

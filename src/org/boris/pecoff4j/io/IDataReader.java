@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.io;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 
 public interface IDataReader {
@@ -34,6 +36,7 @@ public interface IDataReader {
 
   public abstract String readUtf() throws IOException;
 
+  @Nullable
   public abstract String readUnicode() throws IOException;
 
   public abstract String readUnicode(int size) throws IOException;

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class JMP extends AbstractInstruction {
   private byte imm8;
   private int imm32;
@@ -23,6 +25,7 @@ public class JMP extends AbstractInstruction {
     this.code = toCode(0xe9, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     switch (getOpCode()) {
       case 0xe9:

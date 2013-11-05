@@ -9,10 +9,14 @@
  *******************************************************************************/
 package org.boris.pecoff4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 public class PESignature {
+  @NotNull
   private static byte[] expected1 = new byte[]{0x50, 0x45, 0x00, 0x00};
+  @NotNull
   private static byte[] expected2 = new byte[]{0x50, 0x69, 0x00, 0x00};
   private byte[] signature;
 

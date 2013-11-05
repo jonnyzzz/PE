@@ -9,11 +9,14 @@
  *******************************************************************************/
 package org.boris.pecoff4j.resources;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class IconDirectory {
   private int reserved;
   private int type;
+  @NotNull
   private ArrayList entries = new ArrayList();
 
   public void add(IconDirectoryEntry entry) {
@@ -24,6 +27,7 @@ public class IconDirectory {
     return entries.size();
   }
 
+  @NotNull
   public IconDirectoryEntry getEntry(int index) {
     return (IconDirectoryEntry) entries.get(index);
   }

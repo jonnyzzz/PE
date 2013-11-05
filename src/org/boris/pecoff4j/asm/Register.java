@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.Nullable;
+
 public class Register {
+  @Nullable
   public static String to32(int register) {
     switch (register) {
       case 0:

@@ -12,6 +12,7 @@ package org.boris.pecoff4j.util;
 import org.boris.pecoff4j.PE;
 import org.boris.pecoff4j.ResourceDirectory;
 import org.boris.pecoff4j.io.PEParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class RCEdit {
     launch(new String[]{"/I", "test/WinRun4J.exe", "test/eclipse.ico"});
   }
 
-  public static void launch(String[] args) throws Exception {
+  public static void launch(@NotNull String[] args) throws Exception {
     assertArgCount(args, 2, 3);
 
     String option = args[0].toUpperCase();
@@ -59,7 +60,7 @@ public class RCEdit {
 
   }
 
-  private static void assertArgCount(String[] args, int min, int max) {
+  private static void assertArgCount(@NotNull String[] args, int min, int max) {
     if (args.length < min || args.length > max) {
       printUsage();
       System.exit(1);

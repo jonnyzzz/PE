@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class SHL extends AbstractInstruction {
   private ModRM modrm;
   private byte imm8;
@@ -19,6 +21,7 @@ public class SHL extends AbstractInstruction {
     this.code = toCode(0xc1, modrm, imm8);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "shl  " + Register.to32(modrm.reg1) + ", " + toHexString(imm8, false);
   }

@@ -9,11 +9,14 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class RET extends AbstractInstruction {
   public RET() {
     this.code = toCode(0xc3);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "ret";
   }

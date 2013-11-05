@@ -11,32 +11,33 @@ package org.boris.pecoff4j.io;
 
 import org.boris.pecoff4j.*;
 import org.boris.pecoff4j.constant.ImageDataDirectoryType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.*;
 
 public class PEAssembler {
-  public static byte[] toBytes(PE pe) throws IOException {
+  public static byte[] toBytes(@NotNull PE pe) throws IOException {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     write(pe, bos);
     return bos.toByteArray();
   }
 
-  public static void write(PE pe, String filename) throws IOException {
+  public static void write(@NotNull PE pe, String filename) throws IOException {
     write(pe, new FileOutputStream(filename));
   }
 
-  public static void write(PE pe, File file) throws IOException {
+  public static void write(@NotNull PE pe, File file) throws IOException {
     write(pe, new FileOutputStream(file));
   }
 
-  public static void write(PE pe, OutputStream os) throws IOException {
+  public static void write(@NotNull PE pe, OutputStream os) throws IOException {
     DataWriter dw = new DataWriter(os);
     write(pe, dw);
     dw.flush();
   }
 
-  public static void write(PE pe, IDataWriter dw) throws IOException {
+  public static void write(@NotNull PE pe, @NotNull IDataWriter dw) throws IOException {
     write(pe.getDosHeader(), dw);
     write(pe.getStub(), dw);
     write(pe.getSignature(), dw);
@@ -62,7 +63,7 @@ public class PEAssembler {
       dw.writeBytes(tb);
   }
 
-  private static void write(DOSHeader dh, IDataWriter dw) throws IOException {
+  private static void write(@NotNull DOSHeader dh, @NotNull IDataWriter dw) throws IOException {
     dw.writeWord(dh.getMagic());
     dw.writeWord(dh.getUsedBytesInLastPage());
     dw.writeWord(dh.getFileSizeInPages());
@@ -90,15 +91,15 @@ public class PEAssembler {
     dw.writeDoubleWord(dh.getAddressOfNewExeHeader());
   }
 
-  private static void write(DOSStub stub, IDataWriter dw) throws IOException {
+  private static void write(@NotNull DOSStub stub, @NotNull IDataWriter dw) throws IOException {
     dw.writeBytes(stub.getStub());
   }
 
-  private static void write(PESignature s, IDataWriter dw) throws IOException {
+  private static void write(@NotNull PESignature s, @NotNull IDataWriter dw) throws IOException {
     dw.writeBytes(s.getSignature());
   }
 
-  private static void write(COFFHeader ch, IDataWriter dw) throws IOException {
+  private static void write(@NotNull COFFHeader ch, @NotNull IDataWriter dw) throws IOException {
     dw.writeWord(ch.getMachine());
     dw.writeWord(ch.getNumberOfSections());
     dw.writeDoubleWord(ch.getTimeDateStamp());
@@ -108,7 +109,7 @@ public class PEAssembler {
     dw.writeWord(ch.getCharacteristics());
   }
 
-  private static void write(OptionalHeader oh, IDataWriter dw)
+  private static void write(@NotNull OptionalHeader oh, @NotNull IDataWriter dw)
           throws IOException {
     boolean is64 = oh.isPE32plus();
 
@@ -165,13 +166,13 @@ public class PEAssembler {
     }
   }
 
-  private static void write(ImageDataDirectory idd, IDataWriter dw)
+  private static void write(@NotNull ImageDataDirectory idd, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeDoubleWord(idd.getVirtualAddress());
     dw.writeDoubleWord(idd.getSize());
   }
 
-  private static void writeSectionHeaders(PE pe, IDataWriter dw)
+  private static void writeSectionHeaders(@NotNull PE pe, @NotNull IDataWriter dw)
           throws IOException {
     SectionTable st = pe.getSectionTable();
     int ns = st.getNumberOfSections();
@@ -181,7 +182,7 @@ public class PEAssembler {
     }
   }
 
-  private static void writeSectionHeader(SectionHeader sh, IDataWriter dw)
+  private static void writeSectionHeader(@NotNull SectionHeader sh, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeUtf(sh.getName(), 8);
     dw.writeDoubleWord(sh.getVirtualSize());
@@ -195,7 +196,7 @@ public class PEAssembler {
     dw.writeDoubleWord(sh.getCharacteristics());
   }
 
-  private static void writeImageData(PE pe, DataEntry entry, IDataWriter dw)
+  private static void writeImageData(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataWriter dw)
           throws IOException {
     ImageDataDirectory idd = pe.getOptionalHeader().getDataDirectory(
             entry.index);
@@ -265,7 +266,7 @@ public class PEAssembler {
     }
   }
 
-  private static void writeDebugRawData(PE pe, DataEntry entry, IDataWriter dw)
+  private static void writeDebugRawData(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataWriter dw)
           throws IOException {
     if (entry.pointer > dw.getPosition()) {
       byte[] pa = pe.getImageData().getDebugRawDataPreamble();
@@ -277,7 +278,7 @@ public class PEAssembler {
     dw.writeBytes(pe.getImageData().getDebugRawData());
   }
 
-  private static void writeSection(PE pe, DataEntry entry, IDataWriter dw)
+  private static void writeSection(@NotNull PE pe, @NotNull DataEntry entry, @NotNull IDataWriter dw)
           throws IOException {
     SectionTable st = pe.getSectionTable();
     SectionHeader sh = st.getHeader(entry.index);
@@ -296,8 +297,8 @@ public class PEAssembler {
     dw.writeBytes(b);
   }
 
-  private static void write(PE pe, BoundImportDirectoryTable bidt,
-                            IDataWriter dw) throws IOException {
+  private static void write(@NotNull PE pe, @NotNull BoundImportDirectoryTable bidt,
+                            @NotNull IDataWriter dw) throws IOException {
     int pos = dw.getPosition();
     List<BoundImport> bil = new ArrayList();
 
@@ -310,7 +311,7 @@ public class PEAssembler {
     }
 
     Collections.sort(bil, new Comparator<BoundImport>() {
-      public int compare(BoundImport o1, BoundImport o2) {
+      public int compare(@NotNull BoundImport o1, @NotNull BoundImport o2) {
         return o1.getOffsetToModuleName() - o2.getOffsetToModuleName();
       }
     });

@@ -10,11 +10,12 @@
 package org.boris.pecoff4j.io;
 
 import org.boris.pecoff4j.resources.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 public class ResourceAssembler {
-  public static void write(FixedFileInfo info, IDataWriter dw)
+  public static void write(@NotNull FixedFileInfo info, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeDoubleWord(info.getSignature());
     dw.writeDoubleWord(info.getStrucVersion());
@@ -31,14 +32,14 @@ public class ResourceAssembler {
     dw.writeDoubleWord(info.getFileDateLS());
   }
 
-  public static void write(RGBQuad rgb, IDataWriter dw) throws IOException {
+  public static void write(@NotNull RGBQuad rgb, @NotNull IDataWriter dw) throws IOException {
     dw.writeByte(rgb.getBlue());
     dw.writeByte(rgb.getGreen());
     dw.writeByte(rgb.getRed());
     dw.writeByte(rgb.getReserved());
   }
 
-  public static void write(IconImage ii, IDataWriter dw) throws IOException {
+  public static void write(@NotNull IconImage ii, @NotNull IDataWriter dw) throws IOException {
     if (ii.getHeader() != null) {
       write(ii.getHeader(), dw);
       RGBQuad[] colors = ii.getColors();
@@ -54,7 +55,7 @@ public class ResourceAssembler {
     }
   }
 
-  public static void write(BitmapInfoHeader bih, IDataWriter dw)
+  public static void write(@NotNull BitmapInfoHeader bih, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeDoubleWord(bih.getSize());
     dw.writeDoubleWord(bih.getWidth());
@@ -69,7 +70,7 @@ public class ResourceAssembler {
     dw.writeDoubleWord(bih.getClrImportant());
   }
 
-  public static void write(IconDirectoryEntry ide, IDataWriter dw)
+  public static void write(@NotNull IconDirectoryEntry ide, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeByte(ide.getWidth());
     dw.writeByte(ide.getHeight());
@@ -81,7 +82,7 @@ public class ResourceAssembler {
     dw.writeDoubleWord(ide.getOffset());
   }
 
-  public static void write(IconDirectory id, IDataWriter dw)
+  public static void write(@NotNull IconDirectory id, @NotNull IDataWriter dw)
           throws IOException {
     dw.writeWord(id.getReserved());
     dw.writeWord(id.getType());

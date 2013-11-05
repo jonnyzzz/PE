@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CALL extends AbstractInstruction {
   private int imm32;
 
@@ -22,6 +24,7 @@ public class CALL extends AbstractInstruction {
     this.code = toCode(opcode, imm32);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     switch (getOpCode()) {
       case 0xe8:

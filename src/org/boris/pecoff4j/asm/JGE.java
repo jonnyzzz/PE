@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class JGE extends AbstractInstruction {
   private byte imm8;
 
@@ -17,6 +19,7 @@ public class JGE extends AbstractInstruction {
     this.code = toCode(0x7d, imm8);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "jge  " + toHexString(imm8, true);
   }

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.io;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 
 public class DataWriter implements IDataWriter {
@@ -35,7 +37,7 @@ public class DataWriter implements IDataWriter {
     position += count;
   }
 
-  public void writeBytes(byte[] b) throws IOException {
+  public void writeBytes(@NotNull byte[] b) throws IOException {
     out.write(b);
     position += b.length;
   }
@@ -71,7 +73,7 @@ public class DataWriter implements IDataWriter {
     return position;
   }
 
-  public void writeUtf(String s, int len) throws IOException {
+  public void writeUtf(@NotNull String s, int len) throws IOException {
     byte[] b = s.getBytes(); // FIXME sort out charset
     int i = 0;
     for (; i < b.length && i < len; i++) {
@@ -83,7 +85,7 @@ public class DataWriter implements IDataWriter {
     position += len;
   }
 
-  public void writeUtf(String s) throws IOException {
+  public void writeUtf(@NotNull String s) throws IOException {
     byte[] b = s.getBytes(); // FIXME sort out charset
     out.write(b);
     out.write(0);

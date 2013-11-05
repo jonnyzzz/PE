@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.boris.pecoff4j.asm;
 
+import org.jetbrains.annotations.NotNull;
+
 public class POP extends AbstractInstruction {
   private int register;
 
@@ -17,6 +19,7 @@ public class POP extends AbstractInstruction {
     this.code = toCode(0x58 | register);
   }
 
+  @NotNull
   public String toIntelAssembly() {
     return "pop  " + Register.to32(register);
   }

@@ -9,10 +9,12 @@
  *******************************************************************************/
 package org.boris.pecoff4j.util;
 
+import org.jetbrains.annotations.NotNull;
+
 public class HexDump {
   private static final int WIDTH = 20;
 
-  public static void dump(byte[] data, int offset, int length) {
+  public static void dump(@NotNull byte[] data, int offset, int length) {
     int numRows = length / WIDTH;
     for (int i = 0; i < numRows; i++) {
       dumpRow(data, offset + i * WIDTH, WIDTH);
@@ -23,7 +25,7 @@ public class HexDump {
     }
   }
 
-  public static void dump(byte[] data) {
+  public static void dump(@NotNull byte[] data) {
     dump(data, 0, data.length);
   }
 
