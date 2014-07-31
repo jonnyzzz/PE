@@ -462,6 +462,7 @@ public class PEParser {
         int dad = idd.getVirtualAddress();
         if (dad >= vad && dad < vex) {
           int off = dad - vad;
+          off += 32;
           IDataReader idr = new ByteArrayDataReader(b, off, idd.getSize());
           DataEntry de = new DataEntry(i, 0);
           de.baseAddress = sh.getVirtualAddress();
@@ -544,19 +545,19 @@ public class PEParser {
 
   @Nullable
   public static ImportDirectoryEntry readImportDirectoryEntry(@NotNull IDataReader dr) throws IOException {
-    ImportDirectoryEntry id = new ImportDirectoryEntry();
-    id.setImportLookupTableRVA(dr.readDoubleWord());
-    id.setTimeDateStamp(dr.readDoubleWord());
-    id.setForwarderChain(dr.readDoubleWord());
-    id.setNameRVA(dr.readDoubleWord());
-    id.setImportAddressTableRVA(dr.readDoubleWord());
+    ImportDirectoryEntry ide = new ImportDirectoryEntry();
+    ide.setImportLookupTableRVA(dr.readDoubleWord());
+    ide.setTimeDateStamp(dr.readDoubleWord());
+    ide.setForwarderChain(dr.readDoubleWord());
+    ide.setNameRVA(dr.readDoubleWord());
+    ide.setImportAddressTableRVA(dr.readDoubleWord());
 
     // The last entry is null
-    if (id.getImportLookupTableRVA() == 0) {
+    if (ide.getImportLookupTableRVA() == 0) {
       return null;
     }
 
-    return id;
+    return ide;
   }
 
   @NotNull
