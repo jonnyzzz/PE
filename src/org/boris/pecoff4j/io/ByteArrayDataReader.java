@@ -34,6 +34,8 @@ public class ByteArrayDataReader implements IDataReader {
   }
 
   public int getPosition() {
+    if(position >= data.length)
+      return -1;
     return position;
   }
 
