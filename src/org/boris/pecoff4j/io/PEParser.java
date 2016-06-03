@@ -462,6 +462,7 @@ public class PEParser {
         int dad = idd.getVirtualAddress();
         if (dad >= vad && dad < vex) {
           int off = dad - vad;
+          off += 32;
           IDataReader idr = new ByteArrayDataReader(b, off, idd.getSize());
           DataEntry de = new DataEntry(i, 0);
           de.baseAddress = sh.getVirtualAddress();
@@ -544,19 +545,19 @@ public class PEParser {
 
   @Nullable
   public static ImportDirectoryEntry readImportDirectoryEntry(@NotNull IDataReader dr) throws IOException {
-    ImportDirectoryEntry id = new ImportDirectoryEntry();
-    id.setImportLookupTableRVA(dr.readDoubleWord());
-    id.setTimeDateStamp(dr.readDoubleWord());
-    id.setForwarderChain(dr.readDoubleWord());
-    id.setNameRVA(dr.readDoubleWord());
-    id.setImportAddressTableRVA(dr.readDoubleWord());
+    ImportDirectoryEntry ide = new ImportDirectoryEntry();
+    ide.setImportLookupTableRVA(dr.readDoubleWord());
+    ide.setTimeDateStamp(dr.readDoubleWord());
+    ide.setForwarderChain(dr.readDoubleWord());
+    ide.setNameRVA(dr.readDoubleWord());
+    ide.setImportAddressTableRVA(dr.readDoubleWord());
 
     // The last entry is null
-    if (id.getImportLookupTableRVA() == 0) {
+    if (ide.getImportLookupTableRVA() == 0) {
       return null;
     }
 
-    return id;
+    return ide;
   }
 
   @NotNull
@@ -679,14 +680,17 @@ public class PEParser {
     d.setTable(readResourceDirectoryTable(dr));
     int ne = d.getTable().getNumNameEntries() +
             d.getTable().getNumIdEntries();
-    for (int i = 0; i < ne; i++) {
-      d.add(readResourceEntry(dr, baseAddress));
+    ResourceEntry resourceEntry = null;
+    int count = 0;
+    while((resourceEntry = readResourceEntry(dr, baseAddress)) != null && count < ne) {
+      d.add(resourceEntry);
+      count++;
     }
 
     return d;
   }
 
-  @NotNull
+  @Nullable
   private static ResourceEntry readResourceEntry(@NotNull IDataReader dr,
                                                  int baseAddress) throws IOException {
     ResourceEntry re = new ResourceEntry();
@@ -695,15 +699,18 @@ public class PEParser {
     int pos = dr.getPosition();
     if ((id & 0x80000000) != 0) {
       dr.jumpTo(id & 0x7fffffff);
+      if(dr.getPosition() < 0) return null;
       re.setName(dr.readUnicode());
     } else {
       re.setId(id);
     }
     if ((offset & 0x80000000) != 0) {
       dr.jumpTo(offset & 0x7fffffff);
+      if(dr.getPosition() < 0) return null;
       re.setDirectory(readResourceDirectory(dr, baseAddress));
     } else {
       dr.jumpTo(offset);
+      if(dr.getPosition() < 0) return null;
       int rva = dr.readDoubleWord();
       int size = dr.readDoubleWord();
       int cp = dr.readDoubleWord();
@@ -711,6 +718,7 @@ public class PEParser {
       re.setCodePage(cp);
       re.setReserved(res);
       dr.jumpTo(rva - baseAddress);
+      if(dr.getPosition() < 0) return null;
       byte[] b = new byte[size];
       dr.read(b);
       re.setData(b);
